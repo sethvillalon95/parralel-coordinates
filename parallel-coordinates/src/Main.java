@@ -38,7 +38,7 @@ public class Main extends JFrame {
     // use to test the connection to the DB
     private int runSimpleCountQuery(String q) {
         try {
-            Connection c = DriverManager.getConnection("jdbc:derby:scatterPlot");
+            Connection c = DriverManager.getConnection("jdbc:derby:sethFinal");
             Statement s = c.createStatement();
             ResultSet rs = s.executeQuery(q);
             rs.next();
@@ -62,7 +62,7 @@ public class Main extends JFrame {
     private void performUltimateQuery(String q) {
         //List<Point2D> results = new ArrayList<>();
         try {
-            Connection c = DriverManager.getConnection("jdbc:derby:MyDBTest");
+            Connection c = DriverManager.getConnection("jdbc:derby:sethFinal");
             Statement s = c.createStatement();
             ResultSet rs = s.executeQuery(q);
             ResultSetMetaData md = rs.getMetaData();
