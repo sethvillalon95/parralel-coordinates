@@ -38,7 +38,7 @@ public class Main extends JFrame {
     // use to test the connection to the DB
     private int runSimpleCountQuery(String q) {
         try {
-            Connection c = DriverManager.getConnection("jdbc:derby:sethFinal");
+            Connection c = DriverManager.getConnection("jdbc:derby:scatterPlot");
             Statement s = c.createStatement();
             ResultSet rs = s.executeQuery(q);
             rs.next();
