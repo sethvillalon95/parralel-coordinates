@@ -1,3 +1,4 @@
+import java.awt.Graphics;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -10,7 +11,7 @@ public class Axis {
     public Axis(String name) {
         columnName = name;
         data = new ArrayList<>();
-    }
+    } 
 
     public void extractData(ResultSet rs) {
         try {
@@ -19,6 +20,22 @@ public class Axis {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+    }
+    
+    public void draw(Graphics g) {
+    	for(var d:data) {
+    		// calculate the x and y 
+    	}
+    	try {
+        	// create an arraylist for x and  the y coordinates
+    		// compute the for y coordiantes, y = rel*h
+    		// draw the polyline using the array 
+    		// and the x
+    	}catch(Exception e) {
+    		
+    	}
+
+    	
     }
 
     public void debug() {

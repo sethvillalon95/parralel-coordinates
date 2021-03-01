@@ -27,6 +27,8 @@ public class Vis extends JPanel implements MouseListener, MouseMotionListener {
     private Point corner;
     private List<Point2D> scatterData;
     private List<Point2D> relativeScatterData;
+    private int numRows;
+    
 
     public Vis() {
         super();
@@ -37,11 +39,15 @@ public class Vis extends JPanel implements MouseListener, MouseMotionListener {
         addMouseListener(this);
         addMouseMotionListener(this);
         box = null;
+        numRows=0;
     }
 
     public void setText(String t) {
         textToDisplay = t;
         repaint();
+    }
+    public void setRows(int r) {
+    	numRows = r;
     }
 
     public void setData(Map<String, Double> acacia) {
@@ -84,7 +90,7 @@ public class Vis extends JPanel implements MouseListener, MouseMotionListener {
 
         //draw blank background
         g.setColor(Color.WHITE);
-        g.fillRect(0, 0, getWidth(), getHeight());
+        g.fillRect(0, 0, getWidth(), getHeight()); 
 
         //render visualization
         g.setColor(Color.BLACK);
@@ -100,37 +106,15 @@ public class Vis extends JPanel implements MouseListener, MouseMotionListener {
 
         //pseudocode for drawing polylines
         //find out how many rows there are
-        //loop that many times
-        //  instantiate a polyline object
-        //  for each axis
-        //      lookup the value in the axis for that row, add it to polyline
-/*        int y=h, x;
-        int howManyBars = relativeData.keySet().size();
-        int[] kaipoY = new int[howManyBars];
-        int[] kaipoX = new int[howManyBars];
-        int xSpacing = getWidth() / (howManyBars+1);
-        x = xSpacing;
-        int i=0;
-        for (var jerico : relativeData.keySet()) {
-            double barWidth = h * relativeData.get(jerico);
-            //uncomment this line for bar charts
-            //g.drawLine(x,y, x, y-(int)barWidth);
-            kaipoY[i] = y-(int)barWidth;
-            kaipoX[i] = x;
-            x += xSpacing;
-            i++;
-        }
-        //comment out this line for bar charts
-        g.drawPolyline(kaipoX, kaipoY, howManyBars);
+        for(int i=0; i<numRows; i++) {
+        	 //loop that many times
+            //  instantiate a polyline object
+        	// 	HyrumPolyline poly = new HyrumPolyline();
+            //  for each axis
+            //      lookup the value in the axis for that row, add it to polyline
 
-        g.setColor(Color.RED);
-        g.fill(seth);
-
-        if (box != null) {
-            g.setColor(Color.BLUE);
-            g.draw(box);
         }
- */
+       
     }
 
     @Override
