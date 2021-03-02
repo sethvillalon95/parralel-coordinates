@@ -13,6 +13,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
+
 public class Main extends JFrame {
 
     private Vis mainPanel;
@@ -95,6 +96,14 @@ public class Main extends JFrame {
             }
             for (Axis a : axes) {
                 a.debug();
+                a.setData();
+
+            }
+            
+            for (Axis a : axes) {
+            	System.out.println("Printing the column "+ a.columnName);
+                a.setData();
+
             }
         } catch (SQLException e) {
             System.out.println("could not connect to Derby!");
@@ -146,7 +155,6 @@ public class Main extends JFrame {
         	 int rows = runSimpleCountQuery("SELECT COUNT(*) FROM cis2019",2019);
              System.out.println("I found " + rows + " rows in the table.");
              mainPanel.setRows(rows);
-
 //             mainPanel.setText("I found " + gilmo + " rows in the table.");
             var sethQuery = "SELECT * FROM CIS2019";
             performUltimateQuery(sethQuery,2019);
