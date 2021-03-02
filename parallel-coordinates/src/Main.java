@@ -94,11 +94,11 @@ public class Main extends JFrame {
                     a.extractData(rs);
                 }
             }
-            for (Axis a : axes) {
-                a.debug();
-                a.setData();
-
-            }
+//            for (Axis a : axes) {
+//                a.debug();
+//                a.setData();
+//
+//            }
             
             for (Axis a : axes) {
             	System.out.println("Printing the column "+ a.columnName);
@@ -116,10 +116,10 @@ public class Main extends JFrame {
         JMenuBar menuBar = new JMenuBar();
         JMenu fileMenu = new JMenu("File");
         JMenuItem item1 = new JMenuItem("CIS 2012");
-        JMenuItem item3 = new JMenuItem("Seth's scatterplot");
+        JMenuItem item2 = new JMenuItem("CIS 2019");
+        JMenuItem item3 = new JMenuItem("******");
         var item4 = new JMenuItem("Perform ultimate query!");
         JMenu subMenu = new JMenu("Submenu");
-        JMenuItem item2 = new JMenuItem("Item 2");
 
 
 
@@ -139,9 +139,17 @@ public class Main extends JFrame {
 
             }
         });
+        
+        // CIS 2019 DataSet;
         item2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+           	 int rows = runSimpleCountQuery("SELECT COUNT(*) FROM cis2019",2019);
+             System.out.println("I found " + rows + " rows in the table.");
+             mainPanel.setRows(rows);
+//             mainPanel.setText("I found " + gilmo + " rows in the table.");
+            var sethQuery = "SELECT * FROM CIS2019";
+            performUltimateQuery(sethQuery,2019);
 
             }
         });
