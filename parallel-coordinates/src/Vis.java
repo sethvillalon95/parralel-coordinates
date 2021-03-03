@@ -17,29 +17,26 @@ import java.util.List;
 import javax.swing.JPanel;
 
 
+
 public class Vis extends JPanel implements MouseListener, MouseMotionListener {
 
     private String textToDisplay;
     private Map<String, Double> data;
     private Map<String, Double> relativeData;
     private Ellipse2D.Double seth;
-    private Rectangle box;
-    private Point corner;
-    private List<Point2D> scatterData;
-    private List<Point2D> relativeScatterData;
     private int numRows;
+    private ArrayList<Axis> axes;
     
 
     public Vis() {
         super();
         textToDisplay = "There's nothing to see here.";
         relativeData = new HashMap<>();
-        relativeScatterData = new ArrayList<>();
         seth = new Ellipse2D.Double(50, 100, 40, 40);
         addMouseListener(this);
         addMouseMotionListener(this);
-        box = null;
         numRows=0;
+        axes = new ArrayList<>();
     }
 
     public void setText(String t) {
@@ -65,23 +62,31 @@ public class Vis extends JPanel implements MouseListener, MouseMotionListener {
         repaint();
     }
 
-    public void setData(List<Point2D> acacia) {
-        double maxX = 0;
-        double maxY = 0;
-        for (var kaipo : acacia) {
-            if (kaipo.getX() > maxX) {
-                maxX = kaipo.getX();
-            }
-            if (kaipo.getY() > maxY) {
-                maxY = kaipo.getY();
-            }
-        }
-        for (var kaipo : acacia) {
-            var gilmo = new Point2D.Double(kaipo.getX() / maxX, kaipo.getY() / maxY);
-            relativeScatterData.add(gilmo);
-        }
-        repaint();
+//    public void setData(List<Point2D> acacia) {
+//        double maxX = 0;
+//        double maxY = 0;
+//        for (var kaipo : acacia) {
+//            if (kaipo.getX() > maxX) {
+//                maxX = kaipo.getX();
+//            }
+//            if (kaipo.getY() > maxY) {
+//                maxY = kaipo.getY();
+//            }
+//        }
+//        for (var kaipo : acacia) {
+//            var gilmo = new Point2D.Double(kaipo.getX() / maxX, kaipo.getY() / maxY);
+//            relativeScatterData.add(gilmo);
+//        }
+//        repaint();
+//    }
+//    
+    
+    public void setAxes(ArrayList<Axis> ax) {
+    	axes = ax;
+    	repaint();
     }
+    
+    
 
 
     @Override
@@ -98,11 +103,7 @@ public class Vis extends JPanel implements MouseListener, MouseMotionListener {
 
         final int h = getHeight();
         final int w = getWidth();
-        for (var jerico : relativeScatterData) {
-            int x = (int)(jerico.getX() * w);
-            int y = (int)(h - (jerico.getY() * h));
-            g.fillRect(x, y, 5, 5);
-        }
+       
 
         //pseudocode for drawing polylines
         //find out how many rows there are
@@ -124,15 +125,12 @@ public class Vis extends JPanel implements MouseListener, MouseMotionListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        corner = new Point(e.getX(), e.getY());
-        //create a new rectangle anchored at "corner"
-        box = new Rectangle(corner);
+     
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        box = null;
-        repaint();
+      
     }
 
     @Override
@@ -149,8 +147,7 @@ public class Vis extends JPanel implements MouseListener, MouseMotionListener {
     public void mouseDragged(MouseEvent e) {
         int x = e.getX();
         int y = e.getY();
-        box.setFrameFromDiagonal(corner.x, corner.y, x, y);
-        repaint();
+       
     }
 
     @Override

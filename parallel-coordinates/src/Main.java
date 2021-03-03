@@ -14,10 +14,11 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
 
+
 public class Main extends JFrame {
 
     private Vis mainPanel;
-    private List<Axis> axes;
+    private ArrayList<Axis> axes;
 
     public Main() {
 
@@ -43,7 +44,7 @@ public class Main extends JFrame {
         	if(year==2012) {
                 c = DriverManager.getConnection("jdbc:derby:scatterPlot");
         	}else if(year == 2019) {
-                c = DriverManager.getConnection("jdbc:derby:sethFinal");
+                c = DriverManager.getConnection("jdbc:derby:CIS2019");
 
         	}else {
         		System.out.println("Will not connect to anything");
@@ -52,6 +53,7 @@ public class Main extends JFrame {
             ResultSet rs = s.executeQuery(q);
             rs.next();
             int count = rs.getInt(1);
+//            c.close();
             return count;
         } catch (SQLException e) {
             System.out.println("could not connect to Derby!");
@@ -70,21 +72,24 @@ public class Main extends JFrame {
 
     private void performUltimateQuery(String q, int year) {
         //List<Point2D> results = new ArrayList<>();
-        try {
-        	Connection c =null;
-        	if(year==2012) {
-                c = DriverManager.getConnection("jdbc:derby:scatterPlot");
-        	}else if(year == 2019) {
-                c = DriverManager.getConnection("jdbc:derby:sethFinal");
+    	 try {
+         	Connection c =null;
+         	if(year==2012) {
+                 c = DriverManager.getConnection("jdbc:derby:scatterPlot");
+         	}else if(year == 2019) {
+                 c = DriverManager.getConnection("jdbc:derby:CIS2019");
 
-        	}else {
-        		System.out.println("Will not connect to anything");
-        	}
+         	}else {
+         		System.out.println("Will not connect to anything");
+         	}
             Statement s = c.createStatement();
             ResultSet rs = s.executeQuery(q);
             ResultSetMetaData md = rs.getMetaData();
             int numColumns = md.getColumnCount();
             System.out.println("The num of column is " + numColumns); 
+            if(!axes.isEmpty()) {
+            	axes.clear();
+            }
             for (int i=1; i<=numColumns; i++) {
                 Axis seth = new Axis(md.getColumnName(i));
                 axes.add(seth);
@@ -105,6 +110,7 @@ public class Main extends JFrame {
                 a.setData();
 
             }
+//            c.close();
         } catch (SQLException e) {
             System.out.println("could not connect to Derby!");
         }
@@ -136,6 +142,7 @@ public class Main extends JFrame {
                 // it should be cis2012 but accidentally name it cis2019
                 var sethQuery = "SELECT * FROM cis2019";
                 performUltimateQuery(sethQuery,2012);
+                mainPanel.setAxes(axes);
 
             }
         });
@@ -150,6 +157,9 @@ public class Main extends JFrame {
 //             mainPanel.setText("I found " + gilmo + " rows in the table.");
             var sethQuery = "SELECT * FROM CIS2019";
             performUltimateQuery(sethQuery,2019);
+            mainPanel.setAxes(axes);
+
+            
 
             }
         });
@@ -170,7 +180,7 @@ public class Main extends JFrame {
 
 
         //now hook them all together
-        subMenu.add(item2);
+        fileMenu.add(item2);
         fileMenu.add(item1);
         fileMenu.add(item3);
         fileMenu.add(item4);
@@ -179,6 +189,8 @@ public class Main extends JFrame {
 
         return menuBar;
     }
+    
+
 
     public static void main(String[] args) {
 

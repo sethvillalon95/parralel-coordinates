@@ -1,0 +1,13 @@
+----------------------------------------------------------------
+Tue Mar 02 17:57:51 HST 2021:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-0177-f63c-1ec5-00000ef72070 
+on database directory C:\Users\sethv\OneDrive\Desktop\CS 490R Data Visualization\parralel-coordinates\parallel-coordinates\scatterPlot with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@443b7951 
+Loaded from file:/C:/Apache/db-derby-10.14.2.0-bin/lib/derby.jar
+java.vendor=Oracle Corporation
+java.runtime.version=15.0.1+9-18
+user.dir=C:\Users\sethv\OneDrive\Desktop\CS 490R Data Visualization\parralel-coordinates\parallel-coordinates
+os.name=Windows 10
+os.arch=amd64
+os.version=10.0
+derby.system.home=null
+Database Class Loader started - derby.database.classpath=''

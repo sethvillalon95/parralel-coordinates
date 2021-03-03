@@ -4,8 +4,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
-
 
 public class Axis {
     String columnName;
@@ -13,6 +13,7 @@ public class Axis {
     ArrayList<Object> data;
     ArrayList<Double> relDataNum;
     ArrayList<String> relDataStr;
+    ArrayList<Double>relData;
     
 
     public Axis(String name) {
@@ -20,6 +21,8 @@ public class Axis {
         data = new ArrayList<>();
         relDataNum = new ArrayList<>();
         relDataStr = new ArrayList<>();
+        relData = new ArrayList<>();
+
     } 
 
     public void extractData(ResultSet rs) {
@@ -40,14 +43,16 @@ public class Axis {
     	double maxNum = 0; 
     	double minNum = 0;
     	ArrayList<Double> tempDouble =  new ArrayList<>();
+    	double uniqueVals = 0;
+    	HashSet<String> uniqueSet = new HashSet<String>();
 
     
     	for(Object item:data) {
 //    		System.out.println("The item is "+item);
-            if(item instanceof BigDecimal) {
-            	BigDecimal b = (BigDecimal)item;
+            if(item instanceof Number) {
+            	Number b = (Number)item;
             	double n = b.doubleValue();
-            	System.out.println("the number is" +n);
+//            	System.out.println("the number is" +n);
             	tempDouble.add(n);
             	
             }else if(item instanceof String){
@@ -55,11 +60,15 @@ public class Axis {
             	String s = (String)item;
             	System.out.println(s);
             	
+            	// this sets how many unique values you have. 
+            	if(uniqueSet.add(s)) {
+            		uniqueVals++;
+            	}
 
             }else {
             	System.out.println("String "+item.getClass());
             	System.out.println("The data is neither a String or BigDecimal");
-            	new Exception("Error in checking the instanceof an object");
+//            	new Exception("Error in checking the instanceof an object");
             }
     	}
     	
@@ -80,15 +89,11 @@ public class Axis {
 	} catch (Exception e) {
 		// TODO: handle exception
 		
-		System.out.println("This is the one for the String");
+//		System.out.println("This is the one for the String");
 		
 	}
-
-  	 
-
-    	  
     	
-    	
+    	System.out.println("The number of unique values is " + uniqueVals);
         
     	
     	
