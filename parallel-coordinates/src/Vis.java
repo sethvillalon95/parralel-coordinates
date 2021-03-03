@@ -18,6 +18,8 @@ import javax.swing.JPanel;
 
 
 
+
+
 public class Vis extends JPanel implements MouseListener, MouseMotionListener {
 
     private String textToDisplay;
@@ -39,6 +41,12 @@ public class Vis extends JPanel implements MouseListener, MouseMotionListener {
         numRows=0;
         lines = new ArrayList<>();
         axes = new ArrayList<>();
+        try {
+          axes.clear();
+          lines.clear();
+      }catch (Exception e) {
+			// TODO: handle exception
+		}
     }
 
     public void setText(String t) {
@@ -63,6 +71,14 @@ public class Vis extends JPanel implements MouseListener, MouseMotionListener {
         }
         repaint();
     }
+    public void clear() {
+        try {
+          axes.clear();
+          lines.clear();
+      }catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
 
 //    public void setData(List<Point2D> acacia) {
 //        double maxX = 0;
@@ -102,41 +118,68 @@ public class Vis extends JPanel implements MouseListener, MouseMotionListener {
         //render visualization
         g.setColor(Color.BLACK);
         g.drawString(textToDisplay, 10, 20);
-
-        final int h = getHeight();
-        final int w = getWidth();
+        
+        double marginH = 0.95;
+        double marginW = 0.05;
+        final double h = getHeight()*marginH;
+        final double w = getWidth();
         int numAxes = axes.size();
+        System.out.println("The number of Axis is "+ numAxes);
+        
+
         try {
-            axes.clear();
-            lines.clear();
+//            axes.clear();
+//            lines.clear();
         }catch (Exception e) {
 			// TODO: handle exception
 		}
-
-        for (int i=0; i<numAxes; i++) {
-            Axis tempAx = new Axis(""+('A'+i));
-            double buffer = w/(numAxes+1);
-            tempAx.setGeometry((i+1)*buffer, h);
-            axes.add(tempAx);
-            tempAx.draw(g);
+        
+        int q =0;
+        for(Axis a: axes) {
+        	double buffer = w/(numAxes+1);
+            a.setGeometry((q+1)*buffer, h);
+//            axes.add(a);
+            a.draw(g);
+//            System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"+tempAx.columnName);
+            g.drawString(a.columnName, (int) ((q+1)*buffer), (int) h+10);
+        	
+        	q++;
         }
 
-        int numRows = 5;
-        for (int i=0; i<numRows; i++) {
-            var poly = new HyrumPolyline();
-            for (int j=0; j<numAxes; j++) {
-            	poly.addPoint(axes.get(j).getPointAt(i));
-                lines.add(poly);
-            }
-        }
+//        for (int i=0; i<numAxes; i++) {
+//            Axis tempAx = new Axis(""+('A'+i));
+//            double buffer = w/(numAxes+1);
+//            tempAx.setGeometry((i+1)*buffer, h);
+//            axes.add(tempAx);
+//            tempAx.draw(g);
+////            System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"+tempAx.columnName);
+//            g.drawString(tempAx.columnName, (int) ((i+1)*buffer), (int) h+10);
+//
+//        }
+        
+
+
+
         try {
+            
+            for (int i=0; i<numRows; i++) {
+                var poly = new HyrumPolyline();
+                for (int j=0; j<numAxes; j++) {
+                	poly.addPoint(axes.get(j).getPointAt(i));
+                    lines.add(poly);
+                    
+                    
+                }
+            }
             for (var pl : lines) {
                 pl.draw(g);
             }
-            
+            lines.clear();
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
+        
+
 
        
 

@@ -134,6 +134,7 @@ public class Main extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
             	// I accidentally created the table name into cis2019 
+            	mainPanel.clear();
                 System.out.println("Just clicked menu item 1");
                 int rows = runSimpleCountQuery("SELECT COUNT(*) FROM cis2019",2012);
                 mainPanel.setRows(rows);
@@ -143,7 +144,7 @@ public class Main extends JFrame {
                 var sethQuery = "SELECT * FROM cis2019";
                 performUltimateQuery(sethQuery,2012);
                 mainPanel.setAxes(axes);
-
+                repaint();
             }
         });
         
@@ -151,6 +152,7 @@ public class Main extends JFrame {
         item2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+             mainPanel.clear();
            	 int rows = runSimpleCountQuery("SELECT COUNT(*) FROM cis2019",2019);
              System.out.println("I found " + rows + " rows in the table.");
              mainPanel.setRows(rows);
@@ -158,7 +160,7 @@ public class Main extends JFrame {
             var sethQuery = "SELECT * FROM CIS2019";
             performUltimateQuery(sethQuery,2019);
             mainPanel.setAxes(axes);
-
+            repaint();
             
 
             }
