@@ -26,6 +26,7 @@ public class Vis extends JPanel implements MouseListener, MouseMotionListener {
     private Ellipse2D.Double seth;
     private int numRows;
     private ArrayList<Axis> axes;
+    private List<HyrumPolyline> lines;
     
 
     public Vis() {
@@ -36,6 +37,7 @@ public class Vis extends JPanel implements MouseListener, MouseMotionListener {
         addMouseListener(this);
         addMouseMotionListener(this);
         numRows=0;
+        lines = new ArrayList<>();
         axes = new ArrayList<>();
     }
 
@@ -103,18 +105,42 @@ public class Vis extends JPanel implements MouseListener, MouseMotionListener {
 
         final int h = getHeight();
         final int w = getWidth();
+        int numAxes = axes.size();
+        try {
+            axes.clear();
+            lines.clear();
+        }catch (Exception e) {
+			// TODO: handle exception
+		}
+
+        for (int i=0; i<numAxes; i++) {
+            Axis tempAx = new Axis(""+('A'+i));
+            double buffer = w/(numAxes+1);
+            tempAx.setGeometry((i+1)*buffer, h);
+            axes.add(tempAx);
+            tempAx.draw(g);
+        }
+
+        int numRows = 5;
+        for (int i=0; i<numRows; i++) {
+            var poly = new HyrumPolyline();
+            for (int j=0; j<numAxes; j++) {
+            	poly.addPoint(axes.get(j).getPointAt(i));
+                lines.add(poly);
+            }
+        }
+        try {
+            for (var pl : lines) {
+                pl.draw(g);
+            }
+            
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+
        
 
-        //pseudocode for drawing polylines
-        //find out how many rows there are
-        for(int i=0; i<numRows; i++) {
-        	 //loop that many times
-            //  instantiate a polyline object
-        	// 	HyrumPolyline poly = new HyrumPolyline();
-            //  for each axis
-            //      lookup the value in the axis for that row, add it to polyline
-
-        }
+        
        
     }
 

@@ -1,4 +1,6 @@
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.geom.Point2D;
 import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -6,6 +8,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.awt.geom.Line2D;
+import java.awt.geom.Point2D;
 
 public class Axis {
     String columnName;
@@ -14,6 +18,7 @@ public class Axis {
     ArrayList<Double> relDataNum;
     ArrayList<String> relDataStr;
     ArrayList<Double>relData;
+    private Line2D.Double geometry;
     
 
     public Axis(String name) {
@@ -121,5 +126,18 @@ public class Axis {
         for (var d : data) {
             System.out.println(d);
         }
+    }
+
+    public void setGeometry(double x, double h) {
+        geometry = new Line2D.Double(x, 0, x, h);
+    }
+
+    public void draw(Graphics2D g) {
+        g.draw(geometry);
+    }
+
+    public Point2D.Double getPointAt(int i) {
+        double y = Math.random()*(geometry.y2-geometry.y1);
+        return new Point2D.Double(geometry.x1, y);
     }
 }
