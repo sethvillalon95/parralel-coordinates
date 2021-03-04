@@ -105,11 +105,11 @@ public class Main extends JFrame {
 //
 //            }
             
-            for (Axis a : axes) {
-            	System.out.println("Printing the column "+ a.columnName);
-                a.setData();
-
-            }
+//            for (Axis a : axes) {
+//            	System.out.println("Printing the column "+ a.columnName);
+//                a.setData();
+//
+//            }
 //            c.close();
         } catch (SQLException e) {
             System.out.println("could not connect to Derby!");

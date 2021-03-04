@@ -8,6 +8,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,10 +16,6 @@ import java.util.Map;
 import java.util.List;
 
 import javax.swing.JPanel;
-
-
-
-
 
 public class Vis extends JPanel implements MouseListener, MouseMotionListener {
 
@@ -80,27 +77,15 @@ public class Vis extends JPanel implements MouseListener, MouseMotionListener {
 		}
 	}
 
-//    public void setData(List<Point2D> acacia) {
-//        double maxX = 0;
-//        double maxY = 0;
-//        for (var kaipo : acacia) {
-//            if (kaipo.getX() > maxX) {
-//                maxX = kaipo.getX();
-//            }
-//            if (kaipo.getY() > maxY) {
-//                maxY = kaipo.getY();
-//            }
-//        }
-//        for (var kaipo : acacia) {
-//            var gilmo = new Point2D.Double(kaipo.getX() / maxX, kaipo.getY() / maxY);
-//            relativeScatterData.add(gilmo);
-//        }
-//        repaint();
-//    }
+
 //    
     
     public void setAxes(ArrayList<Axis> ax) {
+
+    	
     	axes = ax;
+//    	System.out.println("Printing the size of ax "+ax.size()+" and the size of axes is "+ axes.size());
+
     	repaint();
     }
     
@@ -124,14 +109,22 @@ public class Vis extends JPanel implements MouseListener, MouseMotionListener {
         final double h = getHeight()*marginH;
         final double w = getWidth();
         int numAxes = axes.size();
-        System.out.println("The number of Axis is "+ numAxes);
+//        System.out.println("The number of Axis is "+ numAxes);
         
 
         try {
-//            axes.clear();
-//            lines.clear();
+            for (Axis a : axes) {
+//            	System.out.println("Printing the column "+ a.columnName);
+                System.out.println("Called");
+
+            	a.setHeight(h);
+                a.setData();
+
+            }
         }catch (Exception e) {
 			// TODO: handle exception
+        	System.out.println(e);
+	         System.err.println("  Message:    " + e.getMessage());
 		}
         
         int q =0;
@@ -140,8 +133,9 @@ public class Vis extends JPanel implements MouseListener, MouseMotionListener {
             a.setGeometry((q+1)*buffer, h);
 //            axes.add(a);
             a.draw(g);
+//            a.setHeight(h);
 //            System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"+tempAx.columnName);
-            g.drawString(a.columnName, (int) ((q+1)*buffer), (int) h+10);
+            g.drawString(a.columnName, (int) ((q+1)*buffer)-20, (int) h+20);
         	
         	q++;
         }
@@ -161,24 +155,42 @@ public class Vis extends JPanel implements MouseListener, MouseMotionListener {
 
 
         try {
-            
+//        	System.out.println("The numAxes is "+axes.get(0));
+//            System.out.println("The numrows is "+numRows);
             for (int i=0; i<numRows; i++) {
+            	
+//            	System.out.println("The i is"+ i+" from the vis.java");
+//
                 var poly = new HyrumPolyline();
+//                System.out.println("The numAxes is "+axes.get(0));
+//
                 for (int j=0; j<numAxes; j++) {
+//                	System.out.println("The i is"+ j+" from the vis.java>>>>>>>>>>>");
+//                	System.out.println("The numAxes is "+axes.get(j).getPointAt(i));
+                	Point2D.Double geom = axes.get(j).getPointAt(i);
+                	var gy =h-(geom.y)*h;
+                	var gx = geom.x;
+//                	Point2D.Double points= new Point2D(gx,gy);
+
                 	poly.addPoint(axes.get(j).getPointAt(i));
+//                	System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<Printing the axes points  "+axes.get(j).getPointAt(i));
                     lines.add(poly);
                     
-                    
+//                    
                 }
             }
+//            System.out.println(lines.size());
             for (var pl : lines) {
                 pl.draw(g);
             }
             lines.clear();
 		} catch (Exception e) {
 			// TODO: handle exception
+//			 System.out.println(e);
+//	         System.err.println("  Message:    " + e.getMessage());
+			
 		}
-        
+//        
 
 
        

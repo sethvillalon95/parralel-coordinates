@@ -4,10 +4,13 @@ import java.awt.geom.Point2D;
 import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.Year;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+
+
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 
@@ -19,6 +22,10 @@ public class Axis {
     ArrayList<String> relDataStr;
     ArrayList<Double>relData;
     private Line2D.Double geometry;
+    private double uniqueVals;
+    double height;
+    boolean isString =false;
+    boolean isNumeric = false;
     
 
     public Axis(String name) {
@@ -27,6 +34,12 @@ public class Axis {
         relDataNum = new ArrayList<>();
         relDataStr = new ArrayList<>();
         relData = new ArrayList<>();
+        try {
+            height =geometry.y2-geometry.y1;
+
+        }catch (Exception e) {
+			// TODO: handle exception
+		}
 
     } 
 
@@ -42,28 +55,32 @@ public class Axis {
     
     // call this (once) after you run the extractData in a for loop. 
     public void setData() {
+    	System.out.println("Setting...");
     	// type check item if it is a double or String
         // then get the max and the min
         // if String, compare them 
     	double maxNum = 0; 
     	double minNum = 0;
     	ArrayList<Double> tempDouble =  new ArrayList<>();
-    	double uniqueVals = 0;
+    	uniqueVals = 0;
     	HashSet<String> uniqueSet = new HashSet<String>();
 
-    
+//        System.out.println("The Height is "+ height);
+
     	for(Object item:data) {
 //    		System.out.println("The item is "+item);
             if(item instanceof Number) {
+            	isNumeric = true;
             	Number b = (Number)item;
             	double n = b.doubleValue();
 //            	System.out.println("the number is" +n);
             	tempDouble.add(n);
             	
             }else if(item instanceof String){
+            	isString = true;
 //            	System.out.println("String "+item.getClass());
             	String s = (String)item;
-            	System.out.println(s);
+//            	System.out.println(s);
             	
             	// this sets how many unique values you have. 
             	if(uniqueSet.add(s)) {
@@ -84,43 +101,69 @@ public class Axis {
       	  maxNum = tempDouble.get(tempDouble.size()-1);
       	  minNum = tempDouble.get(0);
       	  for(double d:tempDouble) {
-      		  relDataNum.add(d/maxNum);
-      		  System.out.println(d/maxNum);
+      		  relData.add((d/maxNum));
+//      		  System.out.println(d/maxNum);
       	  }
 //      	  System.out.println("The Max number is "+ maxNum);
       	  
-      	  // do the same for the String 
 		
 	} catch (Exception e) {
 		// TODO: handle exception
-		
-//		System.out.println("This is the one for the String");
-		
 	}
     	
-    	System.out.println("The number of unique values is " + uniqueVals);
-        
+//    	System.out.println("The number of unique values is " + uniqueVals);
+    	if(isString) {
+        	calcYString(uniqueSet);
+//        	System.out.println("The size of RelData is "+relData.size());
+
+    	}
     	
+    	if(isNumeric) {
+//        	System.out.println("I am numeric The size of RelData is "+relData.size());
+
+    	}
     	
 
     }
-    
-    public void draw(Graphics g) {
-    	for(var d:data) {
-    		// calculate the x and y 
-    	}
+
+
+    private void calcYString(HashSet<String> hash) {
+    	double tempM = divider();
+    	System.out.println("calculating ");
     	try {
-        	// create an arraylist for x and  the y coordinates
-    		// compute the for y coordiantes, y = rel*h
-    		// draw the polyline using the array 
-    		// and the x
-    	}catch(Exception e) {
+			relData.clear();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+    	for(var a: data) {
+    		String b =a.toString();
+    		int jk = 0;
+    		for(var c:hash) {
+    			if(b.equals(c)) {
+            		relData.add(tempM*(jk+1));
+
+    			}
+    			jk++;
+    		}
     		
+//    		for(int jk = 0; jk<hash.size();jk++){
+//    			var temp = hash.
+//    			if()
+//        		relData.add(tempM*(jk+1));
+//        	}
     	}
-
     	
+//    	for(var a:relData) {
+//    		System.out.println("Printing the relData for the String "+a+" for "+ columnName);
+//    	}
+//		
+	}
+    
+    private double divider() {
+    	double tempR = height/(uniqueVals+1);
+    	System.out.println("Height is "+ height);
+    	return tempR;
     }
-
     public void debug() {
         System.out.println("PRINTING DATA FOR COLUMN " + columnName);
         for (var d : data) {
@@ -137,7 +180,26 @@ public class Axis {
     }
 
     public Point2D.Double getPointAt(int i) {
-        double y = Math.random()*(geometry.y2-geometry.y1);
+//        double y = Math.random()*(geometry.y2-geometry.y1);
+//        System.out.println("Y is "+ y + " and  the other is "+(geometry.y2-geometry.y1) +" height is "+height);
+//    	System.out.println("The i is"+ i);
+    	
+        double y = 0;
+//        
+        if(isString) {
+        	y = relData.get(i) ;
+        }else if(isNumeric) {
+        	y = (relData.get(i)*(geometry.y2-geometry.y1));
+        }
+//        
+//        geometry.r
+
         return new Point2D.Double(geometry.x1, y);
     }
+
+	public void setHeight(double h) {
+		// TODO Auto-generated method stub
+		height=h;
+		
+	}
 }
