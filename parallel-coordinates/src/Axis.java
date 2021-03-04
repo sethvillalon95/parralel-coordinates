@@ -26,6 +26,7 @@ public class Axis {
     double height;
     boolean isString =false;
     boolean isNumeric = false;
+    double max=0;
     
 
     public Axis(String name) {
@@ -66,6 +67,8 @@ public class Axis {
     	HashSet<String> uniqueSet = new HashSet<String>();
 
 //        System.out.println("The Height is "+ height);
+    	
+    	tempDouble.clear();
 
     	for(Object item:data) {
 //    		System.out.println("The item is "+item);
@@ -75,6 +78,18 @@ public class Axis {
             	double n = b.doubleValue();
 //            	System.out.println("the number is" +n);
             	tempDouble.add(n);
+            	
+            	if (columnName.equals("GRADYEAR")) {
+            		maxNum = 3019;
+            		max= 3019;
+				}else {
+					if(n>maxNum) {
+                		maxNum =n;
+                		max = n;
+                	}else {
+                		minNum = n;
+                	}
+				}
             	
             }else if(item instanceof String){
             	isString = true;
@@ -96,10 +111,10 @@ public class Axis {
     	
 //    Sort the tempDouble to get the min and Max;
     try {
-    	  Collections.sort(tempDouble); 
+//    	  Collections.sort(tempDouble); 
 //        then loop through the tempDouble to then divide everything by the max number;
-      	  maxNum = tempDouble.get(tempDouble.size()-1);
-      	  minNum = tempDouble.get(0);
+//      	  maxNum = tempDouble.get(tempDouble.size()-1);
+//      	  minNum = tempDouble.get(0);
       	  for(double d:tempDouble) {
       		  relData.add((d/maxNum));
 //      		  System.out.println(d/maxNum);
@@ -109,7 +124,13 @@ public class Axis {
 		
 	} catch (Exception e) {
 		// TODO: handle exception
+		System.out.println(e);
 	}
+    for(var d : relData) {
+    	System.out.println("The data is "+d+ " from column "+ columnName);
+    }
+	System.out.println("The max number is "+ max);
+
     	
 //    	System.out.println("The number of unique values is " + uniqueVals);
     	if(isString) {
@@ -185,11 +206,18 @@ public class Axis {
 //    	System.out.println("The i is"+ i);
     	
         double y = 0;
+        
+
 //        
         if(isString) {
         	y = relData.get(i) ;
         }else if(isNumeric) {
-        	y = (relData.get(i)*(geometry.y2-geometry.y1));
+        	y = (height-relData.get(i)*(geometry.y2-geometry.y1));
+//        	y = (i+1)*height/(max/(max+(max/2)));
+        	
+            if(columnName.equals("GRADYEAR")) {
+            	System.out.println(y+" the relative data is "+relData.get(i));
+            }
         }
 //        
 //        geometry.r
