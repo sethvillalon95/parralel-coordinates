@@ -17,6 +17,7 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
+
 public class Vis extends JPanel implements MouseListener, MouseMotionListener {
 
     private String textToDisplay;
@@ -102,7 +103,6 @@ public class Vis extends JPanel implements MouseListener, MouseMotionListener {
 
         //render visualization
         g.setColor(Color.BLACK);
-        g.drawString(textToDisplay, 10, 20);
         
         double marginH = 0.95;
         double marginW = 0.05;
@@ -115,7 +115,7 @@ public class Vis extends JPanel implements MouseListener, MouseMotionListener {
         try {
             for (Axis a : axes) {
 //            	System.out.println("Printing the column "+ a.columnName);
-                System.out.println("Called");
+//                System.out.println("Called");
 
             	a.setHeight(h);
                 a.setData();
@@ -168,11 +168,14 @@ public class Vis extends JPanel implements MouseListener, MouseMotionListener {
 //                	System.out.println("The i is"+ j+" from the vis.java>>>>>>>>>>>");
 //                	System.out.println("The numAxes is "+axes.get(j).getPointAt(i));
                 	Point2D.Double geom = axes.get(j).getPointAt(i);
-                	var gy =h-(geom.y)*h;
+                	axes.get(j).drawLabels(g);
+                	var gy =(geom.y);
                 	var gx = geom.x;
 //                	Point2D.Double points= new Point2D(gx,gy);
+//                	g.drawString(axes.get(j).getLabel((int)gy), (int)gx+5, (int)gy);
 
                 	poly.addPoint(axes.get(j).getPointAt(i));
+
 //                	System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<Printing the axes points  "+axes.get(j).getPointAt(i));
                     lines.add(poly);
                     

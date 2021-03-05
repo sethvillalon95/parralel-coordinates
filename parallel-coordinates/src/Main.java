@@ -99,11 +99,15 @@ public class Main extends JFrame {
                     a.extractData(rs);
                 }
             }
-//            for (Axis a : axes) {
-//                a.debug();
+            for (Axis a : axes) {
+            	
+            	if(a.columnName.equals("GPA")) {
+                    a.debug();
+
+            	}
 //                a.setData();
-//
-//            }
+
+            }
             
 //            for (Axis a : axes) {
 //            	System.out.println("Printing the column "+ a.columnName);

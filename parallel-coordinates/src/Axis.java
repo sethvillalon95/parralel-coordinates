@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
@@ -7,6 +8,7 @@ import java.sql.SQLException;
 import java.time.Year;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
@@ -21,12 +23,17 @@ public class Axis {
     ArrayList<Double> relDataNum;
     ArrayList<String> relDataStr;
     ArrayList<Double>relData;
+    HashMap<Integer, String> labels;
     private Line2D.Double geometry;
     private double uniqueVals;
     double height;
     boolean isString =false;
     boolean isNumeric = false;
     double max=0;
+    double min =0;
+    double xPos =0;
+    
+//   Object[] labels;
     
 
     public Axis(String name) {
@@ -35,6 +42,7 @@ public class Axis {
         relDataNum = new ArrayList<>();
         relDataStr = new ArrayList<>();
         relData = new ArrayList<>();
+        labels = new HashMap<>();
         try {
             height =geometry.y2-geometry.y1;
 
@@ -80,14 +88,21 @@ public class Axis {
             	tempDouble.add(n);
             	
             	if (columnName.equals("GRADYEAR")) {
-            		maxNum = 3019;
-            		max= 3019;
+            		isNumeric = false;
+            		isString = true;
+            		String string = item.toString();
+            		
+            		if(uniqueSet.add(string)) {
+            			uniqueVals++;
+            		}
+            		
 				}else {
 					if(n>maxNum) {
                 		maxNum =n;
                 		max = n;
                 	}else {
                 		minNum = n;
+//                		min = n;
                 	}
 				}
             	
@@ -111,12 +126,19 @@ public class Axis {
     	
 //    Sort the tempDouble to get the min and Max;
     try {
-//    	  Collections.sort(tempDouble); 
+//    	labels = uniqueSet.toArray();
+    		System.out.println(labels);
+    	  Collections.sort(tempDouble); 
 //        then loop through the tempDouble to then divide everything by the max number;
 //      	  maxNum = tempDouble.get(tempDouble.size()-1);
-//      	  minNum = tempDouble.get(0);
+      	  min = tempDouble.get(0);
       	  for(double d:tempDouble) {
-      		  relData.add((d/maxNum));
+//      		  if(d==2019) {
+//      			  relData.add((double) 1);
+//      		  }else {
+          		  relData.add((d/maxNum));
+
+//      		  }
 //      		  System.out.println(d/maxNum);
       	  }
 //      	  System.out.println("The Max number is "+ maxNum);
@@ -126,10 +148,10 @@ public class Axis {
 		// TODO: handle exception
 		System.out.println(e);
 	}
-    for(var d : relData) {
-    	System.out.println("The data is "+d+ " from column "+ columnName);
-    }
-	System.out.println("The max number is "+ max);
+//    for(var d : relData) {
+//    	System.out.println("The data is "+d+ " from column "+ columnName);
+//    }
+//	System.out.println("The max number is "+ max);
 
     	
 //    	System.out.println("The number of unique values is " + uniqueVals);
@@ -153,6 +175,7 @@ public class Axis {
     	System.out.println("calculating ");
     	try {
 			relData.clear();
+//			labels.clear();
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
@@ -162,22 +185,16 @@ public class Axis {
     		for(var c:hash) {
     			if(b.equals(c)) {
             		relData.add(tempM*(jk+1));
+            		labels.put((int)(height-tempM*(jk+1)),b);
 
     			}
     			jk++;
     		}
-    		
-//    		for(int jk = 0; jk<hash.size();jk++){
-//    			var temp = hash.
-//    			if()
-//        		relData.add(tempM*(jk+1));
-//        	}
     	}
-    	
-//    	for(var a:relData) {
-//    		System.out.println("Printing the relData for the String "+a+" for "+ columnName);
-//    	}
+    		
+
 //		
+    	
 	}
     
     private double divider() {
@@ -193,6 +210,7 @@ public class Axis {
     }
 
     public void setGeometry(double x, double h) {
+    	xPos = x;
         geometry = new Line2D.Double(x, 0, x, h);
     }
 
@@ -210,14 +228,14 @@ public class Axis {
 
 //        
         if(isString) {
-        	y = relData.get(i) ;
+        	y = height-relData.get(i) ;
         }else if(isNumeric) {
         	y = (height-relData.get(i)*(geometry.y2-geometry.y1));
 //        	y = (i+1)*height/(max/(max+(max/2)));
         	
-            if(columnName.equals("GRADYEAR")) {
-            	System.out.println(y+" the relative data is "+relData.get(i));
-            }
+//            if(columnName.equals("GRADYEAR")) {
+//            	System.out.println(y+" the relative data is "+relData.get(i));
+//            }
         }
 //        
 //        geometry.r
@@ -229,5 +247,36 @@ public class Axis {
 		// TODO Auto-generated method stub
 		height=h;
 		
+	}
+	
+	public String getLabel(int p) {
+		// clearing the hashMaps first
+		if(isString) {
+			String string =labels.get(p);
+//			System.out.println()
+			return string;
+		}else{
+			return null;
+		}
+		
+	}
+	
+	public void drawLabels(Graphics2D g) {
+		if(isString) {
+			// for loop the hashMap
+		}else if(isNumeric) {
+	        double multiplier =1;
+	        double yMultiplier =1;
+			for(int j=0; j<4;j++) {
+	        	 String yValue = String.format("%.2f",max*multiplier);
+	        	 g.setColor(Color.RED);
+	             g.drawString(yValue, (int)xPos,(int)(height*.04*yMultiplier));
+//	             System.out.println("The yPosAxis is "+yPosAxis);
+	             multiplier-=.25;    
+	             yMultiplier+=10;
+	        }
+		String yValue = String.format("%.2f",min);
+		g.drawString(yValue,(int)xPos,(int)height);
+		}
 	}
 }
