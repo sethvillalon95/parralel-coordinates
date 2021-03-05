@@ -47,7 +47,8 @@ public class Main extends JFrame {
                 c = DriverManager.getConnection("jdbc:derby:CIS2019");
 
         	}else {
-        		System.out.println("Will not connect to anything");
+        		c = DriverManager.getConnection("jdbc:derby:cs490R");
+//        		System.out.println("Will not connect to anything");
         	}
             Statement s = c.createStatement();
             ResultSet rs = s.executeQuery(q);
@@ -80,7 +81,8 @@ public class Main extends JFrame {
                  c = DriverManager.getConnection("jdbc:derby:CIS2019");
 
          	}else {
-         		System.out.println("Will not connect to anything");
+         		c = DriverManager.getConnection("jdbc:derby:cs490R");
+//        		System.out.println("Will not connect to anything");
          	}
             Statement s = c.createStatement();
             ResultSet rs = s.executeQuery(q);
@@ -127,9 +129,9 @@ public class Main extends JFrame {
         JMenu fileMenu = new JMenu("File");
         JMenuItem item1 = new JMenuItem("CIS 2012");
         JMenuItem item2 = new JMenuItem("CIS 2019");
-        JMenuItem item3 = new JMenuItem("******");
+        JMenuItem item3 = new JMenuItem("Marathon");
         var item4 = new JMenuItem("Perform ultimate query!");
-        JMenu subMenu = new JMenu("Submenu");
+//        JMenu subMenu = new JMenu("Submenu");
 
 
 
@@ -171,7 +173,15 @@ public class Main extends JFrame {
         });
         
         item3.addActionListener(e -> {
-
+        	 mainPanel.clear();
+           	 int rows = runSimpleCountQuery("SELECT COUNT(*) FROM marathon",1);
+             System.out.println("I found " + rows + " rows in the table.");
+             mainPanel.setRows(rows);
+//             mainPanel.setText("I found " + gilmo + " rows in the table.");
+            var sethQuery = "SELECT * FROM marathon";
+            performUltimateQuery(sethQuery,1);
+            mainPanel.setAxes(axes);
+            repaint();
         });
 
         item4.addActionListener(e -> {
@@ -190,7 +200,7 @@ public class Main extends JFrame {
         fileMenu.add(item1);
         fileMenu.add(item3);
         fileMenu.add(item4);
-        fileMenu.add(subMenu);
+//        fileMenu.add(subMenu);
         menuBar.add(fileMenu);
 
         return menuBar;

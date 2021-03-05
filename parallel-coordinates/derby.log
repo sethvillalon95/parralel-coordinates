@@ -1,6 +1,6 @@
 ----------------------------------------------------------------
-Thu Mar 04 20:13:52 HST 2021:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-0178-0105-5dda-00000ef7df98 
+Thu Mar 04 20:29:13 HST 2021:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-0178-0113-6a61-00000ef872a0 
 on database directory C:\Users\sethv\OneDrive\Desktop\CS 490R Data Visualization\parralel-coordinates\parallel-coordinates\CIS2019 with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@443b7951 
 Loaded from file:/C:/Apache/db-derby-10.14.2.0-bin/lib/derby.jar
 java.vendor=Oracle Corporation
@@ -12,9 +12,22 @@ os.version=10.0
 derby.system.home=null
 Database Class Loader started - derby.database.classpath=''
 ----------------------------------------------------------------
-Thu Mar 04 20:13:55 HST 2021:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance 40348015-0178-0105-5dda-00000ef7df98 
+Thu Mar 04 20:29:14 HST 2021:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance 40348015-0178-0113-6a61-00000ef872a0 
 on database directory C:\Users\sethv\OneDrive\Desktop\CS 490R Data Visualization\parralel-coordinates\parallel-coordinates\scatterPlot with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@443b7951 
+Loaded from file:/C:/Apache/db-derby-10.14.2.0-bin/lib/derby.jar
+java.vendor=Oracle Corporation
+java.runtime.version=15.0.1+9-18
+user.dir=C:\Users\sethv\OneDrive\Desktop\CS 490R Data Visualization\parralel-coordinates\parallel-coordinates
+os.name=Windows 10
+os.arch=amd64
+os.version=10.0
+derby.system.home=null
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+Thu Mar 04 20:29:15 HST 2021:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance 185e801c-0178-0113-6a61-00000ef872a0 
+on database directory C:\Users\sethv\OneDrive\Desktop\CS 490R Data Visualization\parralel-coordinates\parallel-coordinates\cs490R with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@443b7951 
 Loaded from file:/C:/Apache/db-derby-10.14.2.0-bin/lib/derby.jar
 java.vendor=Oracle Corporation
 java.runtime.version=15.0.1+9-18
