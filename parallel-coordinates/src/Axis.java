@@ -27,8 +27,8 @@ public class Axis {
     
     
     // this hash map is for the  String type labels. 
-    HashMap<String, Double> unSortedLabels;
-    Map<String, Double> sortedLabels;
+    HashMap<String, Double> labels;
+//    Map<String, Double> sortedLabels;
 
     private Line2D.Double geometry;
     private double uniqueVals;
@@ -47,7 +47,7 @@ public class Axis {
         relDataNum = new ArrayList<>();
         relDataStr = new ArrayList<>();
         relData = new ArrayList<>();
-        unSortedLabels = new HashMap<>();
+        labels = new HashMap<>();
         try {
             height =geometry.y2-geometry.y1;
 
@@ -83,7 +83,7 @@ public class Axis {
 //        System.out.println("The Height is "+ height);
     	
     	tempDouble.clear();
-    	unSortedLabels.clear();
+    	labels.clear();
     	
 
     	for(Object item:data) {
@@ -181,20 +181,20 @@ public class Axis {
         			if(b.equals(c)) {
                 		relData.add(tempM*(jk+1));
                 		double tempRel =height-(tempM*(jk+1));
-                		unSortedLabels.put(b,tempRel);
+                		labels.put(b,tempRel);
 
         			}
         			jk++;
         		}
         	}
     		
-    		try {
-    			sortedLabels.clear();
-    		} catch (Exception e) {
-    			// TODO: handle exception
-    		}
-    		
-    		sortedLabels = new TreeMap<>(unSortedLabels);
+//    		try {
+//    			sortedLabels.clear();
+//    		} catch (Exception e) {
+//    			// TODO: handle exception
+//    		}
+//    		
+//    		sortedLabels = new TreeMap<>(unSortedLabels);
 
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -271,13 +271,13 @@ public class Axis {
 //		}
 //		
 //		Collections.sort(rawData);
-		try {
-			sortedLabels.clear();
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-		
-		sortedLabels = new TreeMap<>(unSortedLabels);
+//		try {
+//			sortedLabels.clear();
+//		} catch (Exception e) {
+//			// TODO: handle exception
+//		}
+//		
+//		sortedLabels = new TreeMap<>(unSortedLabels);
 		
 	}
 	
@@ -285,7 +285,7 @@ public class Axis {
 		if(isString) {
 			// for loop the hashMap
 //			setData();
-			for(var entry:sortedLabels.entrySet()) {
+			for(var entry:labels.entrySet()) {
 				double tempY = entry.getValue();
 				int yPos = (int)tempY;
 
