@@ -55,20 +55,6 @@ public class Vis extends JPanel implements MouseListener, MouseMotionListener {
     	numRows = r;
     }
 
-    public void setData(Map<String, Double> acacia) {
-        data = acacia;
-        var allValues = data.values();
-        double max = 0;
-        for (var kaipo : allValues) {
-            if (kaipo > max) {
-                max = kaipo;
-            }
-        }
-        for (var key : data.keySet()) {
-            relativeData.put(key, data.get(key) / max);
-        }
-        repaint();
-    }
     public void clear() {
         try {
           axes.clear();

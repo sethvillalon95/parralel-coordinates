@@ -11,19 +11,25 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-
-
+import java.util.Map;
+import java.util.TreeMap;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 
 public class Axis {
     String columnName;
-    //what type is it? (string, numbers)
     ArrayList<Object> data;
     ArrayList<Double> relDataNum;
     ArrayList<String> relDataStr;
     ArrayList<Double>relData;
-    HashMap<Integer, String> labels;
+    // this is the rawData for the String for sorting 
+    ArrayList<String>rawData;
+    
+    
+    // this hash map is for the  String type labels. 
+    HashMap<String, Double> unSortedLabels;
+    Map<String, Double> sortedLabels;
+
     private Line2D.Double geometry;
     private double uniqueVals;
     double height;
@@ -33,7 +39,6 @@ public class Axis {
     double min =0;
     double xPos =0;
     
-//   Object[] labels;
     
 
     public Axis(String name) {
@@ -42,7 +47,7 @@ public class Axis {
         relDataNum = new ArrayList<>();
         relDataStr = new ArrayList<>();
         relData = new ArrayList<>();
-        labels = new HashMap<>();
+        unSortedLabels = new HashMap<>();
         try {
             height =geometry.y2-geometry.y1;
 
@@ -73,18 +78,19 @@ public class Axis {
     	ArrayList<Double> tempDouble =  new ArrayList<>();
     	uniqueVals = 0;
     	HashSet<String> uniqueSet = new HashSet<String>();
+    	rawData = new ArrayList<>();
 
 //        System.out.println("The Height is "+ height);
     	
     	tempDouble.clear();
+    	unSortedLabels.clear();
+    	
 
     	for(Object item:data) {
-//    		System.out.println("The item is "+item);
             if(item instanceof Number) {
             	isNumeric = true;
             	Number b = (Number)item;
             	double n = b.doubleValue();
-//            	System.out.println("the number is" +n);
             	tempDouble.add(n);
             	
             	if (columnName.equals("GRADYEAR")) {
@@ -108,9 +114,7 @@ public class Axis {
             	
             }else if(item instanceof String){
             	isString = true;
-//            	System.out.println("String "+item.getClass());
             	String s = (String)item;
-//            	System.out.println(s);
             	
             	// this sets how many unique values you have. 
             	if(uniqueSet.add(s)) {
@@ -120,14 +124,13 @@ public class Axis {
             }else {
             	System.out.println("String "+item.getClass());
             	System.out.println("The data is neither a String or BigDecimal");
-//            	new Exception("Error in checking the instanceof an object");
             }
     	}
     	
 //    Sort the tempDouble to get the min and Max;
     try {
 //    	labels = uniqueSet.toArray();
-    		System.out.println(labels);
+//    		System.out.println(labels);
     	  Collections.sort(tempDouble); 
 //        then loop through the tempDouble to then divide everything by the max number;
 //      	  maxNum = tempDouble.get(tempDouble.size()-1);
@@ -148,23 +151,11 @@ public class Axis {
 		// TODO: handle exception
 		System.out.println(e);
 	}
-//    for(var d : relData) {
-//    	System.out.println("The data is "+d+ " from column "+ columnName);
-//    }
-//	System.out.println("The max number is "+ max);
 
-    	
-//    	System.out.println("The number of unique values is " + uniqueVals);
     	if(isString) {
         	calcYString(uniqueSet);
-//        	System.out.println("The size of RelData is "+relData.size());
-
     	}
-    	
-    	if(isNumeric) {
-//        	System.out.println("I am numeric The size of RelData is "+relData.size());
 
-    	}
     	
 
     }
@@ -173,24 +164,43 @@ public class Axis {
     private void calcYString(HashSet<String> hash) {
     	double tempM = divider();
     	System.out.println("calculating ");
-    	try {
+    	ArrayList<String> list = new ArrayList<String>(hash); 
+        Collections.sort(list);     	
+        try {
 			relData.clear();
 //			labels.clear();
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
-    	for(var a: data) {
-    		String b =a.toString();
-    		int jk = 0;
-    		for(var c:hash) {
-    			if(b.equals(c)) {
-            		relData.add(tempM*(jk+1));
-            		labels.put((int)(height-tempM*(jk+1)),b);
+    	
+    	try {
+    		for(var a: data) {
+        		String b =a.toString();
+        		int jk = 0;
+        		for(var c:list) {
+        			if(b.equals(c)) {
+                		relData.add(tempM*(jk+1));
+                		double tempRel =height-(tempM*(jk+1));
+                		unSortedLabels.put(b,tempRel);
 
-    			}
-    			jk++;
+        			}
+        			jk++;
+        		}
+        	}
+    		
+    		try {
+    			sortedLabels.clear();
+    		} catch (Exception e) {
+    			// TODO: handle exception
     		}
-    	}
+    		
+    		sortedLabels = new TreeMap<>(unSortedLabels);
+
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+    	
+    	
     		
 
 //		
@@ -199,7 +209,7 @@ public class Axis {
     
     private double divider() {
     	double tempR = height/(uniqueVals+1);
-    	System.out.println("Height is "+ height);
+//    	System.out.println("Height is "+ height);
     	return tempR;
     }
     public void debug() {
@@ -249,21 +259,39 @@ public class Axis {
 		
 	}
 	
-	public String getLabel(int p) {
-		// clearing the hashMaps first
-		if(isString) {
-			String string =labels.get(p);
-//			System.out.println()
-			return string;
-		}else{
-			return null;
+	// this method is sorting the hasmap;
+	public void sortData() {
+//		try {
+//			rawData.clear();
+//		} catch (Exception e) {
+//			// TODO: handle exception
+//		}
+//		for(var v: data) {
+//			rawData.add(v.toString());
+//		}
+//		
+//		Collections.sort(rawData);
+		try {
+			sortedLabels.clear();
+		} catch (Exception e) {
+			// TODO: handle exception
 		}
+		
+		sortedLabels = new TreeMap<>(unSortedLabels);
 		
 	}
 	
 	public void drawLabels(Graphics2D g) {
 		if(isString) {
 			// for loop the hashMap
+//			setData();
+			for(var entry:sortedLabels.entrySet()) {
+				double tempY = entry.getValue();
+				int yPos = (int)tempY;
+
+				g.drawString(entry.getKey(),(int)xPos,yPos);
+//				System.out.println(entry.getKey()+" the x Pos is and the yPos "+" "+xPos+" "+yPos);
+			}
 		}else if(isNumeric) {
 	        double multiplier =1;
 	        double yMultiplier =1;
