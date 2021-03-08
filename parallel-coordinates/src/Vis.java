@@ -27,7 +27,8 @@ public class Vis extends JPanel implements MouseListener, MouseMotionListener {
     private int numRows;
     private ArrayList<Axis> axes;
     private List<HyrumPolyline> lines;
-    
+    private Rectangle box;
+    private Point corner;
 
     public Vis() {
         super();
@@ -39,10 +40,12 @@ public class Vis extends JPanel implements MouseListener, MouseMotionListener {
         numRows=0;
         lines = new ArrayList<>();
         axes = new ArrayList<>();
+        box = null;
+
         try {
           axes.clear();
           lines.clear();
-      }catch (Exception e) {
+        }catch (Exception e) {
 			// TODO: handle exception
 		}
     }
@@ -59,7 +62,7 @@ public class Vis extends JPanel implements MouseListener, MouseMotionListener {
         try {
           axes.clear();
           lines.clear();
-      }catch (Exception e) {
+        }catch (Exception e) {
 			// TODO: handle exception
 		}
 	}
@@ -68,11 +71,7 @@ public class Vis extends JPanel implements MouseListener, MouseMotionListener {
 //    
     
     public void setAxes(ArrayList<Axis> ax) {
-
-    	
     	axes = ax;
-//    	System.out.println("Printing the size of ax "+ax.size()+" and the size of axes is "+ axes.size());
-
     	repaint();
     }
     
@@ -95,17 +94,12 @@ public class Vis extends JPanel implements MouseListener, MouseMotionListener {
         final double h = getHeight()*marginH;
         final double w = getWidth();
         int numAxes = axes.size();
-//        System.out.println("The number of Axis is "+ numAxes);
         
 
         try {
             for (Axis a : axes) {
-//            	System.out.println("Printing the column "+ a.columnName);
-//                System.out.println("Called");
-
             	a.setHeight(h);
                 a.setData();
-
             }
         }catch (Exception e) {
 			// TODO: handle exception
@@ -119,73 +113,44 @@ public class Vis extends JPanel implements MouseListener, MouseMotionListener {
             a.setGeometry((q+1)*buffer, h);
 //            axes.add(a);
             a.draw(g);
-//            a.setHeight(h);
-//            System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"+tempAx.columnName);
             g.drawString(a.columnName, (int) ((q+1)*buffer)-20, (int) h+20);
         	
         	q++;
         }
 
-//        for (int i=0; i<numAxes; i++) {
-//            Axis tempAx = new Axis(""+('A'+i));
-//            double buffer = w/(numAxes+1);
-//            tempAx.setGeometry((i+1)*buffer, h);
-//            axes.add(tempAx);
-//            tempAx.draw(g);
-////            System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"+tempAx.columnName);
-//            g.drawString(tempAx.columnName, (int) ((i+1)*buffer), (int) h+10);
-//
-//        }
-        
 
 
 
-        try {
-//        	System.out.println("The numAxes is "+axes.get(0));
-//            System.out.println("The numrows is "+numRows);
+        try {       	
             for (int i=0; i<numRows; i++) {
             	
-//            	System.out.println("The i is"+ i+" from the vis.java");
 //
                 var poly = new HyrumPolyline();
 //                System.out.println("The numAxes is "+axes.get(0));
 //
                 for (int j=0; j<numAxes; j++) {
-//                	System.out.println("The i is"+ j+" from the vis.java>>>>>>>>>>>");
-//                	System.out.println("The numAxes is "+axes.get(j).getPointAt(i));
-                	Point2D.Double geom = axes.get(j).getPointAt(i);
                 	axes.get(j).drawLabels(g);
-                	var gy =(geom.y);
-                	var gx = geom.x;
-//                	Point2D.Double points= new Point2D(gx,gy);
-//                	g.drawString(axes.get(j).getLabel((int)gy), (int)gx+5, (int)gy);
-
                 	poly.addPoint(axes.get(j).getPointAt(i));
-
-//                	System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<Printing the axes points  "+axes.get(j).getPointAt(i));
                     lines.add(poly);
-                    
-//                    
+                                       
                 }
             }
-//            System.out.println(lines.size());
             for (var pl : lines) {
                 pl.draw(g);
             }
             lines.clear();
 		} catch (Exception e) {
-			// TODO: handle exception
+	
 //			 System.out.println(e);
 //	         System.err.println("  Message:    " + e.getMessage());
 			
 		}
-//        
-
-
-       
-
         
-       
+        // draw the box
+        if (box != null) {
+            g.setColor(Color.CYAN);
+            g.draw(box);
+        }
     }
 
     @Override
@@ -195,12 +160,14 @@ public class Vis extends JPanel implements MouseListener, MouseMotionListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
-     
+    	 corner = new Point(e.getX(), e.getY());
+    	 box = new Rectangle(corner);
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-      
+    	 box = null;
+    	 repaint();
     }
 
     @Override
@@ -215,8 +182,10 @@ public class Vis extends JPanel implements MouseListener, MouseMotionListener {
 
     @Override
     public void mouseDragged(MouseEvent e) {
-        int x = e.getX();
+    	int x = e.getX();
         int y = e.getY();
+        box.setFrameFromDiagonal(corner.x, corner.y, x, y);
+        repaint();
        
     }
 
