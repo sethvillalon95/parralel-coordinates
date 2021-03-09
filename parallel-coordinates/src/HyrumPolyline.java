@@ -17,6 +17,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.GeneralPath;
+import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -52,7 +53,22 @@ public class HyrumPolyline
 		polygon = new GeneralPath(hp.polygon);
 		points = new ArrayList<Point2D>(hp.points);
 	}
-
+	
+	public double getDistanceFromPoint(int x, int y) {
+    	double min = Double.MAX_VALUE;
+    	for (int i=1; i<points.size(); i++) {
+    		double x1 = points.get(i-1).getX();
+			double y1 = points.get(i-1).getY();
+			double x2 = points.get(i).getX();
+			double y2 = points.get(i).getY();
+			double dist = Line2D.ptLineDistSq(x1, y1, x2, y2, x, y);
+			if (dist < min) {
+				min = dist;
+			}
+		}
+    	return min;
+    }
+	
 	public void addPoint(final Point2D p) {
 		addPoint(p.getX(), p.getY());
 	}

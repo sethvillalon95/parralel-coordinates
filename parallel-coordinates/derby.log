@@ -1,7 +1,7 @@
 ----------------------------------------------------------------
-Mon Mar 08 04:58:29 HST 2021:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-0178-1258-bdec-00000ef85e20 
-on database directory C:\Users\sethv\OneDrive\Desktop\CS 490R Data Visualization\parralel-coordinates\parallel-coordinates\CIS2019 with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@443b7951 
+Mon Mar 08 22:33:14 HST 2021:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-0178-161e-67e5-0000010b3890 
+on database directory C:\Users\sethv\OneDrive\Desktop\CS 490R Data Visualization\parralel-coordinates\parallel-coordinates\CIS2019 with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@e73f9ac 
 Loaded from file:/C:/Apache/db-derby-10.14.2.0-bin/lib/derby.jar
 java.vendor=Oracle Corporation
 java.runtime.version=15.0.1+9-18

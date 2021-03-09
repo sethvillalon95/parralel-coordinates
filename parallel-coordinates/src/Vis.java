@@ -123,11 +123,7 @@ public class Vis extends JPanel implements MouseListener, MouseMotionListener {
 
         try {       	
             for (int i=0; i<numRows; i++) {
-            	
-//
                 var poly = new HyrumPolyline();
-//                System.out.println("The numAxes is "+axes.get(0));
-//
                 for (int j=0; j<numAxes; j++) {
                 	axes.get(j).drawLabels(g);
                 	poly.addPoint(axes.get(j).getPointAt(i));
@@ -138,7 +134,7 @@ public class Vis extends JPanel implements MouseListener, MouseMotionListener {
             for (var pl : lines) {
                 pl.draw(g);
             }
-            lines.clear();
+//            lines.clear();
 		} catch (Exception e) {
 	
 //			 System.out.println(e);
@@ -192,12 +188,20 @@ public class Vis extends JPanel implements MouseListener, MouseMotionListener {
     @Override
     public void mouseMoved(MouseEvent e) {
         int x = e.getX();
-        int y = e.getY();
-        if (seth.contains(x,y)) {
-            //System.out.println("Hello, Seth's ellipse!");
-            setToolTipText("Hello from " + x + "," + y);
-        } else {
-            setToolTipText(null);
+        int y = e.getY();        
+      //for each polyline, measure the distance from the mouse to the polyline
+        //highlight the polyline that's closest (within a given threshold)
+        double min = 100000;
+        HyrumPolyline selected = new HyrumPolyline();
+        for (var p : lines) {
+            p.unhighlight();
+            double dist = p.getDistanceFromPoint(x,y);
+            if (dist < min) {
+                min = dist;
+                selected = p;
+            }
         }
+        selected.highlight();
+        repaint();
     }
 }
