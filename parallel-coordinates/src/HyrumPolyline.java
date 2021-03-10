@@ -13,8 +13,10 @@
  *********************************/
 
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Stroke;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Line2D;
@@ -34,6 +36,8 @@ public class HyrumPolyline
 		implements Serializable, Comparable<HyrumPolyline> {
 	private GeneralPath polygon;
 	private List<Point2D> points;
+	private static Stroke regularLine = new BasicStroke(1);
+	private static Stroke thickLine = new BasicStroke(5);
 	
 	private enum State {
 		NORMAL,
@@ -103,7 +107,10 @@ public class HyrumPolyline
 	}
 
 	public void draw(final Graphics2D g) {
+		g.setStroke(regularLine);
+
 		if (state == State.HIGHLIGHTED) {
+			g.setStroke(thickLine);
 			g.setColor(Color.CYAN);
 		} else if (state==State.NORMAL) {
 			g.setColor(Color.BLACK);

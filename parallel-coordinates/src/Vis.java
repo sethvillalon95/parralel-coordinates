@@ -29,6 +29,8 @@ public class Vis extends JPanel implements MouseListener, MouseMotionListener {
     private List<HyrumPolyline> lines;
     private Rectangle box;
     private Point corner;
+    private boolean firstRun;
+
 
     public Vis() {
         super();
@@ -201,6 +203,7 @@ public class Vis extends JPanel implements MouseListener, MouseMotionListener {
                 selected = p;
             }
         }
+//        lines.clear();
         selected.highlight();
         repaint();
     }
