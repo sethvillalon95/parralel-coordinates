@@ -38,6 +38,7 @@ public class Axis {
     double max=0;
     double min =0;
     double xPos =0;
+    String labelName =" ";
     
     
 
@@ -248,7 +249,9 @@ public class Axis {
 //            }
         }
 //        
+//        labelName+=data.get(i).toString();
 //        geometry.r
+        
 
         return new Point2D.Double(geometry.x1, y);
     }
@@ -257,6 +260,10 @@ public class Axis {
 		// TODO Auto-generated method stub
 		height=h;
 		
+	}
+	public String getData(int i) {
+		String dataString = data.get(i).toString();
+		return dataString;
 	}
 	
 	// this method is sorting the hasmap;
@@ -307,4 +314,10 @@ public class Axis {
 		g.drawString(yValue,(int)xPos,(int)height);
 		}
 	}
+	public String  getLabelName() {
+		labelName+=columnName+" ";
+		return labelName;
+		
+	}
 }
+

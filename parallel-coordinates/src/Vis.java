@@ -126,12 +126,17 @@ public class Vis extends JPanel implements MouseListener, MouseMotionListener {
         try {       	
             for (int i=0; i<numRows; i++) {
                 var poly = new HyrumPolyline();
+                String tempString = "";
                 for (int j=0; j<numAxes; j++) {
-                	axes.get(j).drawLabels(g);
-                	poly.addPoint(axes.get(j).getPointAt(i));
+                	Axis a = axes.get(j);
+                	a.drawLabels(g);
+                	poly.addPoint(a.getPointAt(i));
+                	tempString+=" "+a.columnName+": "+a.getData(j);
+//                	Main.say(axes.get(j).columnName);
                     lines.add(poly);
                                        
                 }
+                Main.say(tempString+" at i: "+i);
             }
             for (var pl : lines) {
                 pl.draw(g);
@@ -183,6 +188,17 @@ public class Vis extends JPanel implements MouseListener, MouseMotionListener {
     	int x = e.getX();
         int y = e.getY();
         box.setFrameFromDiagonal(corner.x, corner.y, x, y);
+        
+        for(var pl: lines) {
+        	HyrumPolyline selected = new HyrumPolyline();
+        	if(pl.intersects(box)) {
+        		selected = pl;
+        		selected.highlight();
+        	}else {
+        		selected.unhighlight();
+        	}
+        }
+        
         repaint();
        
     }
@@ -197,13 +213,16 @@ public class Vis extends JPanel implements MouseListener, MouseMotionListener {
         HyrumPolyline selected = new HyrumPolyline();
         for (var p : lines) {
             p.unhighlight();
+            p.fade();
             double dist = p.getDistanceFromPoint(x,y);
             if (dist < min) {
                 min = dist;
                 selected = p;
             }
+            
         }
 //        lines.clear();
+        setToolTipText(selected.getLabelName());
         selected.highlight();
         repaint();
     }

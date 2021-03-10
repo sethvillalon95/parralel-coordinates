@@ -16,6 +16,7 @@
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.Stroke;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.GeneralPath;
@@ -38,6 +39,7 @@ public class HyrumPolyline
 	private List<Point2D> points;
 	private static Stroke regularLine = new BasicStroke(1);
 	private static Stroke thickLine = new BasicStroke(5);
+	String lineData ="";
 	
 	private enum State {
 		NORMAL,
@@ -65,7 +67,7 @@ public class HyrumPolyline
 			double y1 = points.get(i-1).getY();
 			double x2 = points.get(i).getX();
 			double y2 = points.get(i).getY();
-			double dist = Line2D.ptLineDistSq(x1, y1, x2, y2, x, y);
+			double dist = Line2D.ptSegDist(x1, y1, x2, y2, x, y);
 			if (dist < min) {
 				min = dist;
 			}
@@ -119,6 +121,22 @@ public class HyrumPolyline
 		}
 		g.draw(polygon);			
 	}
+	
+	public boolean intersects(Rectangle box) {
+//		boolean result =false;
+    	for (int i=1; i<points.size(); i++) {
+    		double x1 = points.get(i-1).getX();
+			double y1 = points.get(i-1).getY();
+			double x2 = points.get(i).getX();
+			double y2 = points.get(i).getY();
+			if(box.intersectsLine(x1, y1, x2, y2)) {
+				
+				return true;
+			}
+		}
+		return false;
+    	
+	}
 
 	public void draw(Graphics2D g, Color c) {
 		g.setColor(c);
@@ -147,6 +165,10 @@ public class HyrumPolyline
 
 	public boolean isNormal() {
 		return (state == State.NORMAL);
+	}
+	
+	public String getLabelName() {
+		return lineData;
 	}
 
 	@Override
