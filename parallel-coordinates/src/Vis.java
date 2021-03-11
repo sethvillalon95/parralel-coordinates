@@ -19,6 +19,7 @@ import javax.swing.JPanel;
 
 
 
+
 public class Vis extends JPanel implements MouseListener, MouseMotionListener {
 
     private String textToDisplay;
@@ -261,6 +262,14 @@ public class Vis extends JPanel implements MouseListener, MouseMotionListener {
             }
             
         }
+        int ind = lines.indexOf(selected)/6;
+        String toolTip ="";
+        for(var a: axes) {
+        	toolTip+=a.columnName+": ";
+        	toolTip+=a.getData(ind)+", ";
+        	
+        }
+        setToolTipText(toolTip);
         
 
        
