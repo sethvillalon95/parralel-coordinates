@@ -116,7 +116,8 @@ public class HyrumPolyline
 			g.setColor(Color.CYAN);
 		} else if (state==State.NORMAL) {
 			g.setColor(Color.BLACK);
-		} else {//invisible
+		} else {//invisible 
+//			g.setStroke(thickLine);
 			g.setColor(invisibleColor);
 		}
 		g.draw(polygon);			

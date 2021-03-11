@@ -88,7 +88,7 @@ public class Main extends JFrame {
             ResultSet rs = s.executeQuery(q);
             ResultSetMetaData md = rs.getMetaData();
             int numColumns = md.getColumnCount();
-            System.out.println("The num of column is " + numColumns); 
+//            System.out.println("The num of column is " + numColumns); 
             if(!axes.isEmpty()) {
             	axes.clear();
             }

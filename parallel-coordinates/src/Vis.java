@@ -18,6 +18,7 @@ import java.util.List;
 import javax.swing.JPanel;
 
 
+
 public class Vis extends JPanel implements MouseListener, MouseMotionListener {
 
     private String textToDisplay;
@@ -27,9 +28,13 @@ public class Vis extends JPanel implements MouseListener, MouseMotionListener {
     private int numRows;
     private ArrayList<Axis> axes;
     private List<HyrumPolyline> lines;
+    private List<HyrumPolyline>selectedLines;
     private Rectangle box;
     private Point corner;
     private boolean firstRun;
+    private final int setWidth = 800;
+    private final int setHeight = 600;
+    public boolean isDrawn = false;
 
 
     public Vis() {
@@ -41,6 +46,7 @@ public class Vis extends JPanel implements MouseListener, MouseMotionListener {
         addMouseMotionListener(this);
         numRows=0;
         lines = new ArrayList<>();
+        selectedLines = new ArrayList<>();
         axes = new ArrayList<>();
         box = null;
 
@@ -105,8 +111,8 @@ public class Vis extends JPanel implements MouseListener, MouseMotionListener {
             }
         }catch (Exception e) {
 			// TODO: handle exception
-        	System.out.println(e);
-	         System.err.println("  Message:    " + e.getMessage());
+//        	System.out.println(e);
+//	         System.err.println("  Message:    " + e.getMessage());
 		}
         
         int q =0;
@@ -123,24 +129,44 @@ public class Vis extends JPanel implements MouseListener, MouseMotionListener {
 
 
 
-        try {       	
-            for (int i=0; i<numRows; i++) {
-                var poly = new HyrumPolyline();
-                String tempString = "";
-                for (int j=0; j<numAxes; j++) {
-                	Axis a = axes.get(j);
-                	a.drawLabels(g);
-                	poly.addPoint(a.getPointAt(i));
-                	tempString+=" "+a.columnName+": "+a.getData(j);
-//                	Main.say(axes.get(j).columnName);
-                    lines.add(poly);
-                                       
+        try {  
+        	if(!isDrawn) {
+                if(!lines.isEmpty()) {
+                	lines.clear();
+            		Main.say("clearing");
+
                 }
-                Main.say(tempString+" at i: "+i);
-            }
-            for (var pl : lines) {
-                pl.draw(g);
-            }
+
+        		Main.say("drawing");
+        		 for (int i=0; i<numRows; i++) {
+                     var poly = new HyrumPolyline();
+                     String tempString = "";
+                     for (int j=0; j<numAxes; j++) {
+                     	Axis a = axes.get(j);
+                     	a.drawLabels(g);
+                     	poly.addPoint(a.getPointAt(i));
+                     	tempString+=" "+a.columnName+": "+a.getData(j);
+//                     	Main.say(axes.get(j).columnName);
+                         lines.add(poly);
+                                            
+                     }
+//                     Main.say(tempString+" at i: "+i);
+                 }
+        		 Main.say("isDrawn is "+ isDrawn);
+        		 
+        		 isDrawn = true;
+        	}
+        	Main.say("The size of the array list:" + lines.size());
+        	
+        	if(setHeight != getHeight() || setWidth!=getWidth()) {
+        		isDrawn =false;
+        	}
+           if(!lines.isEmpty()) {
+               for (var pl : lines) {
+                   pl.draw(g);
+               }
+           }
+
 //            lines.clear();
 		} catch (Exception e) {
 	
@@ -154,6 +180,8 @@ public class Vis extends JPanel implements MouseListener, MouseMotionListener {
             g.setColor(Color.CYAN);
             g.draw(box);
         }
+        
+        Main.say("The size of the selectedLines is "+ selectedLines.size()+" >>>>>>>>>>>>>>>>>>>>>>");
     }
 
     @Override
@@ -165,11 +193,19 @@ public class Vis extends JPanel implements MouseListener, MouseMotionListener {
     public void mousePressed(MouseEvent e) {
     	 corner = new Point(e.getX(), e.getY());
     	 box = new Rectangle(corner);
+//    	 selectedLines.clear();
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
     	 box = null;
+//    	 for(var p : lines) {
+//    		 if(!p.isHighlighted()) {
+//    			 p.fade();
+//    		 }else if(p.isHighlighted()) {
+////    			 p.unhighlight();
+//    		 }
+//    	 }
     	 repaint();
     }
 
@@ -189,16 +225,19 @@ public class Vis extends JPanel implements MouseListener, MouseMotionListener {
         int y = e.getY();
         box.setFrameFromDiagonal(corner.x, corner.y, x, y);
         
+        Main.say("The size of lines is "+ lines.size());
         for(var pl: lines) {
-        	HyrumPolyline selected = new HyrumPolyline();
+        	pl.fade();
+        	HyrumPolyline selected;
         	if(pl.intersects(box)) {
         		selected = pl;
         		selected.highlight();
+        		selectedLines.add(selected);
         	}else {
-        		selected.unhighlight();
+        		pl.fade();
         	}
         }
-        
+        Main.say("Selected lines " + selectedLines.size());
         repaint();
        
     }
@@ -210,10 +249,11 @@ public class Vis extends JPanel implements MouseListener, MouseMotionListener {
       //for each polyline, measure the distance from the mouse to the polyline
         //highlight the polyline that's closest (within a given threshold)
         double min = 100000;
-        HyrumPolyline selected = new HyrumPolyline();
+        HyrumPolyline selected = null;
         for (var p : lines) {
+        	Main.say("hellooooooooooooooooooooooooooooooooooooooooooooooo");
             p.unhighlight();
-            p.fade();
+//            p.fade();
             double dist = p.getDistanceFromPoint(x,y);
             if (dist < min) {
                 min = dist;
@@ -221,9 +261,21 @@ public class Vis extends JPanel implements MouseListener, MouseMotionListener {
             }
             
         }
+        
+
+       
 //        lines.clear();
-        setToolTipText(selected.getLabelName());
-        selected.highlight();
-        repaint();
+//        setToolTipText(selected.getLabelName());
+       if(selected!=null) {
+           selected.highlight();
+           repaint();
+
+       }
+
+//       if(selectedLines.size()==0) {
+//    	   repaint();
+//       }else {
+//    	   Main.say(selectedLines.size());
+//       }
     }
 }

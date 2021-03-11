@@ -1,0 +1,13 @@
+----------------------------------------------------------------
+Wed Mar 10 16:22:57 HST 2021:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.15.2.0 - (1873585): instance a816c00e-0178-1f18-1d0f-000007136000 
+on database directory /Users/gilmogim/Desktop/HW/CS 490RW/Parallel2/MyTable2 with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@73d16e93 
+Loaded from file:/Users/gilmogim/Derby/db-derby-10.15.2.0-bin/lib/derby.jar
+java.vendor=Oracle Corporation
+java.runtime.version=15.0.1+9-18
+user.dir=/Users/gilmogim/Desktop/HW/CS 490RW/Parallel2
+os.name=Mac OS X
+os.arch=x86_64
+os.version=10.16
+derby.system.home=null
+Database Class Loader started - derby.database.classpath=''

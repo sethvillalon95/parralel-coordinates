@@ -70,7 +70,7 @@ public class Axis {
     
     // call this (once) after you run the extractData in a for loop. 
     public void setData() {
-    	System.out.println("Setting...");
+//    	System.out.println("Setting...");
     	// type check item if it is a double or String
         // then get the max and the min
         // if String, compare them 
@@ -164,7 +164,7 @@ public class Axis {
 
     private void calcYString(HashSet<String> hash) {
     	double tempM = divider();
-    	System.out.println("calculating ");
+//    	System.out.println("calculating ");
     	ArrayList<String> list = new ArrayList<String>(hash); 
         Collections.sort(list);     	
         try {
